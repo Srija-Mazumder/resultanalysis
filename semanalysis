@@ -1,0 +1,270 @@
+import React from 'react';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
+
+const CompletePerformanceAnalysis = () => {
+  // Updated grade distribution data for all 8 semesters (50 total subjects)
+  const gradeDistribution = [
+    { name: 'Outstanding (O)', value: 17, color: '#10B981' },
+    { name: 'Excellent (E)', value: 20, color: '#3B82F6' },
+    { name: 'Very Good (A)', value: 10, color: '#8B5CF6' },
+    { name: 'Good (B)', value: 5, color: '#F59E0B' },
+    { name: 'Fair (C)', value: 1, color: '#EF4444' }
+  ];
+
+  // Complete SGPA progression data
+  const sgpaData = [
+    { semester: 'Sem 1', sgpa: 9.54, credits: 17.5, year: 'First Year' },
+    { semester: 'Sem 2', sgpa: 9.44, credits: 20.5, year: 'First Year' },
+    { semester: 'Sem 3', sgpa: 8.59, credits: 22.0, year: 'Second Year' },
+    { semester: 'Sem 4', sgpa: 7.95, credits: 21.0, year: 'Second Year' },
+    { semester: 'Sem 5', sgpa: 9.13, credits: 24.0, year: 'Third Year' },
+    { semester: 'Sem 6', sgpa: 8.64, credits: 22.0, year: 'Third Year' },
+    { semester: 'Sem 7', sgpa: 8.83, credits: 18.0, year: 'Fourth Year' },
+    { semester: 'Sem 8', sgpa: 9.20, credits: 15.0, year: 'Fourth Year' }
+  ];
+
+  // Subject performance categories updated
+  const subjectCategories = [
+    { category: 'Laboratory & Practicals', count: 13, averageGrade: 9.9, performance: 'Excellent' },
+    { category: 'Programming & Software', count: 8, averageGrade: 9.1, performance: 'Excellent' },
+    { category: 'Project Work', count: 3, averageGrade: 10.0, performance: 'Outstanding' },
+    { category: 'Core CS Theory', count: 12, averageGrade: 8.2, performance: 'Good' },
+    { category: 'Advanced CS Topics', count: 8, averageGrade: 8.4, performance: 'Good' },
+    { category: 'Mathematics', count: 4, averageGrade: 7.8, performance: 'Moderate' },
+    { category: 'General/Humanities', count: 5, averageGrade: 9.0, performance: 'Excellent' }
+  ];
+
+  // Year-wise performance
+  const yearlyPerformance = [
+    { year: 'First Year', avgSGPA: 9.49, totalCredits: 38.0, performance: 'Outstanding' },
+    { year: 'Second Year', avgSGPA: 8.27, totalCredits: 43.0, performance: 'Good' },
+    { year: 'Third Year', avgSGPA: 8.89, totalCredits: 46.0, performance: 'Very Good' },
+    { year: 'Fourth Year', avgSGPA: 9.02, totalCredits: 33.0, performance: 'Excellent' }
+  ];
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-3 border border-gray-300 rounded shadow-lg">
+          <p className="font-semibold">{`${label}`}</p>
+          <p className="text-blue-600">{`Count: ${payload[0].value}`}</p>
+          <p className="text-sm text-gray-600">{`${((payload[0].value / 53) * 100).toFixed(1)}% of total grades`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div className="w-full max-w-7xl mx-auto p-6 bg-gray-50">
+      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">
+          Complete Academic Journey Analysis (Sem 1-8)
+        </h1>
+        <div className="text-center mb-8">
+          <p className="text-lg text-gray-600">Final CGPA: <span className="font-bold text-blue-600">8.89</span></p>
+          <p className="text-sm text-gray-500">B.Tech in Computer Science & Engineering</p>
+        </div>
+        
+        {/* SGPA Trend Line Chart */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-6 text-center">
+            SGPA Journey: The Comeback Story
+          </h2>
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={sgpaData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="semester" />
+              <YAxis domain={[7.5, 10]} />
+              <Tooltip />
+              <Legend />
+              <Line 
+                type="monotone" 
+                dataKey="sgpa" 
+                stroke="#3B82F6" 
+                strokeWidth={3}
+                dot={{ fill: '#3B82F6', strokeWidth: 2, r: 6 }}
+                name="SGPA"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded">
+              <h4 className="font-semibold text-red-800">The Struggle Phase</h4>
+              <p className="text-red-700 text-sm">Semesters 3-4: Dropped to 7.95 SGPA (lowest point)</p>
+            </div>
+            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded">
+              <h4 className="font-semibold text-green-800">The Recovery</h4>
+              <p className="text-green-700 text-sm">Semesters 5-8: Bounced back strongly, ending at 9.20!</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Updated Grade Distribution Pie Chart */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-6 text-center">
+            Overall Grade Distribution (53 Total Subjects)
+          </h2>
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
+            <div className="w-full lg:w-1/2">
+              <ResponsiveContainer width="100%" height={400}>
+                <PieChart>
+                  <Pie
+                    data={gradeDistribution}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, value, percent }) => 
+                      `${name}: ${value} (${(percent).toFixed(1)}%)`
+                    }
+                    outerRadius={120}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {gradeDistribution.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip />} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            
+            <div className="w-full lg:w-1/2">
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold mb-4 text-gray-700">Final Grade Summary</h3>
+                <div className="space-y-3">
+                  {gradeDistribution.map((grade, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                      <div className="flex items-center">
+                        <div 
+                          className="w-4 h-4 rounded-full mr-3"
+                          style={{ backgroundColor: grade.color }}
+                        ></div>
+                        <span className="font-medium">{grade.name}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-bold text-lg">{grade.value}</span>
+                        <span className="text-sm text-gray-500 ml-1">
+                          ({((grade.value / 53) * 100).toFixed(1)}%)
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-6 p-4 bg-green-50 border-l-4 border-green-400 rounded">
+                  <h4 className="font-semibold text-green-800">Success Story:</h4>
+                  <p className="text-green-700 text-sm">
+                    70% Outstanding/Excellent grades. Only 1 'C' grade out of 53 subjects!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Year-wise Performance */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-6 text-center">
+            Year-wise Academic Performance
+          </h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={yearlyPerformance} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="year" />
+              <YAxis domain={[8, 10]} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="avgSGPA" fill="#3B82F6" name="Average SGPA" radius={[4, 4, 0, 0]}>
+                {yearlyPerformance.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={
+                      entry.avgSGPA >= 9.4 ? '#10B981' : 
+                      entry.avgSGPA >= 8.8 ? '#3B82F6' : 
+                      entry.avgSGPA >= 8.5 ? '#F59E0B' : '#EF4444'
+                    } 
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Subject Category Performance */}
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-700 mb-6 text-center">
+            Performance by Subject Categories
+          </h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart
+              data={subjectCategories}
+              margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="category" 
+                angle={-45}
+                textAnchor="end"
+                height={100}
+                interval={0}
+              />
+              <YAxis domain={[7, 10]} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="averageGrade" fill="#3B82F6" name="Average Grade Points" radius={[4, 4, 0, 0]}>
+                {subjectCategories.map((entry, index) => (
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={
+                      entry.averageGrade >= 9.5 ? '#10B981' : 
+                      entry.averageGrade >= 8.5 ? '#3B82F6' : 
+                      entry.averageGrade >= 8 ? '#F59E0B' : '#EF4444'
+                    } 
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Key Insights */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-green-50 border-l-4 border-green-400 p-6 rounded-lg">
+            <h3 className="font-bold text-green-800 text-lg mb-3">🌟 Your Superpowers</h3>
+            <ul className="text-green-700 text-sm space-y-2">
+              <li>• <strong>Project Work:</strong> Perfect 10.0 average</li>
+              <li>• <strong>Laboratory Skills:</strong> 9.9 average</li>
+              <li>• <strong>Programming:</strong> 9.1 average</li>
+              <li>• <strong>Recovery Ability:</strong> Bounced back from 7.95 to 9.20!</li>
+            </ul>
+          </div>
+          
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
+            <h3 className="font-bold text-yellow-800 text-lg mb-3">⚠️ Work Harder Areas</h3>
+            <ul className="text-yellow-700 text-sm space-y-2">
+              <li>• <strong>Mathematics:</strong> 7.8 average (your weakest)</li>
+              <li>• <strong>Core CS Theory:</strong> 8.2 average</li>
+              <li>• <strong>Database Systems:</strong> Mixed performance</li>
+              <li>• <strong>Theoretical Foundations:</strong> Need strengthening</li>
+            </ul>
+          </div>
+          
+          <div className="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg">
+            <h3 className="font-bold text-blue-800 text-lg mb-3">📈 Amazing Progress</h3>
+            <ul className="text-blue-700 text-sm space-y-2">
+              <li>• <strong>Strong Finish:</strong> Last 3 semesters all 8.6+</li>
+              <li>• <strong>Project Excellence:</strong> All projects Outstanding</li>
+              <li>• <strong>Final CGPA:</strong> 8.89 (Very Good)</li>
+              <li>• <strong>Growth Mindset:</strong> Learned from struggles</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CompletePerformanceAnalysis;
